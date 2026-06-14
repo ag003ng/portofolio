@@ -1,10 +1,12 @@
+import { withBasePath } from './base-path'
+
 export const profile = {
   name: 'Agung Ahmad Rifai',
   tagline: 'Generalist mind, results-driven builder.',
   role: 'Information Systems Student',
   githubUrl: 'https://github.com/ag003ng',
   instagramUrl: 'https://www.instagram.com/ag03ng._',
-  avatar: '/images/profile/profile.png',
+  avatar: withBasePath('/images/profile/profile.png'),
 }
 
 export const navItems = [
@@ -64,9 +66,9 @@ export const projects: Project[] = [
       'A pixel-art cooking game inspired by Overcooked. Players juggle orders, timers, and chaos in the kitchen — built to be fast, fun, and a little frantic.',
     tags: ['Game Design', 'Pixel Art', 'Gameplay Logic'],
     images: [
-      '/images/projects/bonappetit/preview-1.png',
-      '/images/projects/bonappetit/preview-2.png',
-      '/images/projects/bonappetit/preview-3.png',
+      withBasePath('/images/projects/bonappetit/preview-1.png'),
+      withBasePath('/images/projects/bonappetit/preview-2.png'),
+      withBasePath('/images/projects/bonappetit/preview-3.png'),
     ],
     repoUrl: 'https://github.com/ag003ng/bonappetit',
   },
@@ -76,8 +78,8 @@ export const projects: Project[] = [
       'Software for monitoring reforestation efforts in a village. It helps track tree planting progress and growth over time so communities can measure real environmental impact.',
     tags: ['Monitoring', 'Database', 'Social Impact'],
     images: [
-      '/images/projects/tenxi/preview-1.png',
-      '/images/projects/tenxi/preview-2.png',
+      withBasePath('/images/projects/tenxi/preview-1.png'),
+      withBasePath('/images/projects/tenxi/preview-2.png'),
     ],
     repoUrl: 'https://github.com/ask4gaje/IF2050-2026-K02-G04-TENXI',
   },
