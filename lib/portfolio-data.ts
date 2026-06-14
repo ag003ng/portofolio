@@ -66,6 +66,7 @@ export const projects: Project[] = [
     images: [
       '/images/projects/bonappetit/preview-1.png',
       '/images/projects/bonappetit/preview-2.png',
+      '/images/projects/bonappetit/preview-3.png',
     ],
     repoUrl: 'https://github.com/ag003ng/bonappetit',
   },

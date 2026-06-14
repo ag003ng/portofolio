@@ -1,6 +1,7 @@
 'use client'
 
-import { ArrowUpRight, Database, GitBranch } from 'lucide-react'
+import { useState } from 'react'
+import { ArrowUpRight, ChevronLeft, ChevronRight, Coffee, Database, GitBranch } from 'lucide-react'
 import Image from 'next/image'
 import { useInView } from '@/lib/hooks/use-inview'
 import {
@@ -12,7 +13,7 @@ import {
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-6 font-mono text-xs uppercase tracking-widest text-primary lg:hidden">
+    <h3 className="mb-6 text-xl font-bold uppercase tracking-wide text-primary">
       {children}
     </h3>
   )
@@ -49,11 +50,7 @@ function SkillIcon({ icon }: { icon: string }) {
     case 'database':
       return <Database className="h-5 w-5" />
     case 'java':
-      return (
-        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8.851 19.802c-.16 0-.32-.048-.46-.144-.24-.168-.36-.456-.36-.864v-3.024h-.24c-.336 0-.504-.216-.504-.648V9.504c0-.24.072-.444.216-.612.144-.168.336-.252.576-.252h.24v-1.44c0-.504.156-.924.468-1.26.312-.336.72-.504 1.224-.504h1.44v1.68h-1.08c-.192 0-.348.06-.468.18-.12.12-.18.276-.18.468v1.44h1.68l-.24 1.8h-1.44v3.168c0 .192.06.348.18.468.12.12.276.18.468.18h1.44v1.56c0 .336-.108.612-.324.828-.216.216-.492.324-.828.324h-1.44v.84c0 .384-.12.708-.36.972-.24.264-.564.396-.972.396zm5.76-13.68c-.336 0-.612.108-.828.324-.216.216-.324.492-.324.828v5.76c0 .336.108.612.324.828.216.216.492.324.828.324.336 0 .612-.108.828-.324.216-.216.324-.492.324-.828v-5.76c0-.336-.108-.612-.324-.828-.216-.216-.492-.324-.828-.324zm4.08.36c-.336 0-.612.108-.828.324-.216.216-.324.492-.324.828v5.4c0 .336.108.612.324.828.216.216.492.324.828.324.336 0 .612-.108.828-.324.216-.216.324-.492.324-.828v-5.4c0-.336-.108-.612-.324-.828-.216-.216-.492-.324-.828-.324z" />
-        </svg>
-      )
+      return <Coffee className="h-5 w-5" />
     case 'git':
       return <GitBranch className="h-5 w-5" />
     default:
@@ -61,12 +58,80 @@ function SkillIcon({ icon }: { icon: string }) {
   }
 }
 
+function ProjectImages({ images, name }: { images: string[]; name: string }) {
+  const [current, setCurrent] = useState(0)
+
+  const prev = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setCurrent((i) => (i === 0 ? images.length - 1 : i - 1))
+  }
+
+  const next = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setCurrent((i) => (i === images.length - 1 ? 0 : i + 1))
+  }
+
+  if (images.length === 0) return null
+
+  return (
+    <div className="relative aspect-video w-full overflow-hidden bg-secondary">
+      {images.map((src, i) => (
+        <Image
+          key={src}
+          src={src}
+          alt={`${name} preview ${i + 1}`}
+          fill
+          className={`object-cover transition-all duration-500 ${
+            i === current
+              ? 'opacity-100 scale-100'
+              : 'opacity-0 scale-105'
+          }`}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority={i === 0}
+        />
+      ))}
+      <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
+
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={prev}
+            className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/60 p-1.5 text-foreground backdrop-blur-sm transition-colors hover:bg-background/80"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/60 p-1.5 text-foreground backdrop-blur-sm transition-colors hover:bg-background/80"
+            aria-label="Next image"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+          <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+            {images.map((_, i) => (
+              <span
+                key={i}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === current ? 'w-5 bg-primary' : 'w-1.5 bg-foreground/40'
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 export function PortfolioContent() {
   return (
-    <main className="flex flex-col gap-20 py-16 lg:w-1/2 lg:py-24">
+    <main className="mx-auto flex w-full max-w-6xl flex-col gap-14 px-6 py-12 sm:px-10 lg:px-16">
       {/* About */}
       <FadeIn>
-        <section id="about" aria-label="About me" className="scroll-mt-24">
+        <section id="about" aria-label="About me" className="scroll-mt-20">
           <SectionHeading>About</SectionHeading>
           <div className="flex flex-col gap-4 leading-relaxed text-muted-foreground">
             {aboutParagraphs.map((p, i) => (
@@ -80,7 +145,7 @@ export function PortfolioContent() {
 
       {/* Skills */}
       <FadeIn>
-        <section id="skills" aria-label="Skills" className="scroll-mt-24">
+        <section id="skills" aria-label="Skills" className="scroll-mt-20">
           <SectionHeading>Skills</SectionHeading>
           <ul className="grid gap-4 sm:grid-cols-2">
             {skills.map((skill, index) => (
@@ -108,7 +173,7 @@ export function PortfolioContent() {
 
       {/* Projects */}
       <FadeIn>
-        <section id="projects" aria-label="Projects" className="scroll-mt-24">
+        <section id="projects" aria-label="Projects" className="scroll-mt-20">
           <SectionHeading>Projects</SectionHeading>
           <ul className="flex flex-col gap-6">
             {projects.map((project, index) => (
@@ -119,19 +184,7 @@ export function PortfolioContent() {
                   rel="noopener noreferrer"
                   className="card-shine group link-underline btn-press block overflow-hidden rounded-lg border border-border bg-card transition-all hover:border-primary/50 hover:shadow-[0_0_20px_rgba(0,200,200,0.1)]"
                 >
-                  {project.images && project.images.length > 0 && (
-                    <div className="relative aspect-video w-full overflow-hidden bg-secondary">
-                      <Image
-                        src={project.images[0]}
-                        alt={`${project.name} preview`}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        priority={index < 2}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
-                    </div>
-                  )}
+                  <ProjectImages images={project.images} name={project.name} />
                   <div className="p-6">
                     <div className="flex items-start justify-between gap-4">
                       <h4 className="text-lg font-semibold text-foreground transition-colors group-hover:text-primary">
@@ -163,9 +216,6 @@ export function PortfolioContent() {
         </section>
       </FadeIn>
 
-      <footer className="border-t border-border pt-8 font-mono text-xs text-muted-foreground">
-        Built by {profile.name}. Designed with care, coded in v0.
-      </footer>
     </main>
   )
 }
