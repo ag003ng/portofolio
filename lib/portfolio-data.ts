@@ -2,8 +2,9 @@ export const profile = {
   name: 'Agung Ahmad Rifai',
   tagline: 'Generalist mind, results-driven builder.',
   role: 'Information Systems Student',
-  // TODO: replace with your real GitHub URL
-  githubUrl: 'https://github.com/your-username',
+  githubUrl: 'https://github.com/ag003ng',
+  instagramUrl: 'https://www.instagram.com/ag03ng._',
+  avatar: '/images/profile/profile.png',
 }
 
 export const navItems = [
@@ -21,24 +22,29 @@ export const aboutParagraphs = [
 export type Skill = {
   name: string
   description: string
+  icon: string
 }
 
 export const skills: Skill[] = [
   {
     name: 'Python',
     description: 'Scripting, automation, data processing, and backend logic.',
+    icon: 'python',
   },
   {
     name: 'SQL / Databases',
     description: 'Designing schemas, writing queries, and modeling data.',
+    icon: 'database',
   },
   {
     name: 'Java',
     description: 'Object-oriented programming and building structured applications.',
+    icon: 'java',
   },
   {
     name: 'Git & GitHub',
     description: 'Version control and collaborating on code with others.',
+    icon: 'git',
   },
 ]
 
@@ -46,6 +52,9 @@ export type Project = {
   name: string
   description: string
   tags: string[]
+  images: string[]
+  liveUrl?: string
+  repoUrl?: string
 }
 
 export const projects: Project[] = [
@@ -54,11 +63,21 @@ export const projects: Project[] = [
     description:
       'A pixel-art cooking game inspired by Overcooked. Players juggle orders, timers, and chaos in the kitchen — built to be fast, fun, and a little frantic.',
     tags: ['Game Design', 'Pixel Art', 'Gameplay Logic'],
+    images: [
+      '/images/projects/bonappetit/preview-1.png',
+      '/images/projects/bonappetit/preview-2.png',
+    ],
+    repoUrl: 'https://github.com/ag003ng/bonappetit',
   },
   {
     name: 'TENXI',
     description:
       'Software for monitoring reforestation efforts in a village. It helps track tree planting progress and growth over time so communities can measure real environmental impact.',
     tags: ['Monitoring', 'Database', 'Social Impact'],
+    images: [
+      '/images/projects/tenxi/preview-1.png',
+      '/images/projects/tenxi/preview-2.png',
+    ],
+    repoUrl: 'https://github.com/ask4gaje/IF2050-2026-K02-G04-TENXI',
   },
 ]

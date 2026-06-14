@@ -92,8 +92,146 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(
+        ellipse 80% 50% at 50% -20%,
+        rgba(0, 200, 200, 0.06),
+        transparent
+      ),
+      radial-gradient(
+        ellipse 60% 40% at 80% 60%,
+        rgba(0, 200, 200, 0.03),
+        transparent
+      );
+    background-attachment: fixed;
   }
   html {
     @apply font-sans;
   }
+}
+
+/* Scroll fade-in animation */
+.animate-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.animate-fade-in.is-in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delay utilities */
+.delay-0 { transition-delay: 0ms; }
+.delay-75 { transition-delay: 75ms; }
+.delay-150 { transition-delay: 150ms; }
+.delay-225 { transition-delay: 225ms; }
+.delay-300 { transition-delay: 300ms; }
+
+/* Typing cursor blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.typing-cursor::after {
+  content: '|';
+  animation: blink 1s infinite;
+  color: var(--primary);
+  margin-left: 2px;
+}
+
+/* Skill badge entrance pulse */
+@keyframes badge-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.skill-badge-animate {
+  animation: badge-pulse 0.4s ease-out;
+}
+
+/* Link underline hover animation */
+.link-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--primary);
+  transition: width 0.3s ease-out;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* Card shine effect on hover */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.5s ease-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-shine:hover::before {
+  left: 150%;
+}
+
+/* Button press animation */
+.btn-press {
+  transition: transform 0.15s ease-out;
+}
+
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+/* Enhanced nav hover */
+.nav-hover {
+  position: relative;
+}
+
+.nav-hover::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 100%;
+  background-color: rgba(0, 200, 200, 0.05);
+  border-radius: 4px;
+  transition: width 0.3s ease-out;
+  z-index: -1;
+}
+
+.nav-hover:hover::before {
+  width: calc(100% + 16px);
+  left: -8px;
 }
