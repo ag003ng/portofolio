@@ -59,6 +59,14 @@ export type Project = {
   repoUrl?: string
 }
 
+export const gallery: string[] = [
+  withBasePath('/images/activities/activities-1.jpeg'),
+  withBasePath('/images/activities/activities-2.jpeg'),
+  withBasePath('/images/activities/activities-3.jpeg'),
+  withBasePath('/images/activities/activities-4.jpeg'),
+  withBasePath('/images/activities/activities-5.jpeg'),
+]
+
 export const projects: Project[] = [
   {
     name: 'Bonappetit',

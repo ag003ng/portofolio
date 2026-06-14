@@ -8,6 +8,7 @@ import {
   aboutParagraphs,
   skills,
   projects,
+  gallery,
   profile,
 } from '@/lib/portfolio-data'
 
@@ -213,6 +214,31 @@ export function PortfolioContent() {
               </li>
             ))}
           </ul>
+        </section>
+      </FadeIn>
+
+      {/* Gallery */}
+      <FadeIn>
+        <section id="gallery" aria-label="Gallery" className="scroll-mt-20">
+          <SectionHeading>Gallery</SectionHeading>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {gallery.map((src) => (
+              <div
+                key={src}
+                className="group aspect-square overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_15px_rgba(0,200,200,0.08)]"
+              >
+                <div className="relative h-full w-full">
+                  <Image
+                    src={src}
+                    alt="Activity photo"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
       </FadeIn>
 
