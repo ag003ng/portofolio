@@ -130,17 +130,19 @@ function ProjectImages({ images, name }: { images: string[]; name: string }) {
 function GalleryCarousel() {
   const [current, setCurrent] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const goNext = () => {
+    setCurrent((c) => (c === gallery.length - 1 ? 0 : c + 1))
+  }
+
+  const goPrev = () => {
+    setCurrent((c) => (c === 0 ? gallery.length - 1 : c - 1))
+  }
 
   useEffect(() => {
-    if (!isPaused) {
-      intervalRef.current = setInterval(() => {
-        setCurrent((c) => (c === gallery.length - 1 ? 0 : c + 1))
-      }, 4000)
-    }
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
+    if (isPaused) return
+    const interval = setInterval(goNext, 4000)
+    return () => clearInterval(interval)
   }, [isPaused])
 
   return (
@@ -150,7 +152,7 @@ function GalleryCarousel() {
       onMouseLeave={() => setIsPaused(false)}
     >
       <div
-        className="flex transition-transform duration-700 ease-in-out"
+        className="flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {gallery.map((src) => (
@@ -166,20 +168,38 @@ function GalleryCarousel() {
         ))}
       </div>
 
-      <div className="absolute bottom-2 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
-        {gallery.map((_, i) => (
+      {gallery.length > 1 && (
+        <>
           <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`h-2 rounded-full transition-all ${
-              i === current
-                ? 'w-5 bg-primary'
-                : 'w-2 bg-foreground/40 hover:bg-foreground/60'
-            }`}
-            aria-label={`Go to photo ${i + 1}`}
-          />
-        ))}
-      </div>
+            onClick={goPrev}
+            className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/60 p-1.5 text-foreground backdrop-blur-sm transition-colors hover:bg-background/80"
+            aria-label="Previous photo"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            onClick={goNext}
+            className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/60 p-1.5 text-foreground backdrop-blur-sm transition-colors hover:bg-background/80"
+            aria-label="Next photo"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+          <div className="absolute bottom-2 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+            {gallery.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                className={`h-2 rounded-full transition-all ${
+                  i === current
+                    ? 'w-5 bg-primary'
+                    : 'w-2 bg-foreground/40 hover:bg-foreground/60'
+                }`}
+                aria-label={`Go to photo ${i + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 }
