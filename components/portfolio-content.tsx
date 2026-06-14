@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ArrowUpRight, ChevronLeft, ChevronRight, Coffee, Database, GitBranch } from 'lucide-react'
 import Image from 'next/image'
 import { useInView } from '@/lib/hooks/use-inview'
@@ -127,6 +127,63 @@ function ProjectImages({ images, name }: { images: string[]; name: string }) {
   )
 }
 
+function GalleryCarousel() {
+  const [current, setCurrent] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  useEffect(() => {
+    if (!isPaused) {
+      intervalRef.current = setInterval(() => {
+        setCurrent((c) => (c === gallery.length - 1 ? 0 : c + 1))
+      }, 4000)
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
+  }, [isPaused])
+
+  return (
+    <div
+      className="relative overflow-hidden rounded-lg border border-border bg-card"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div
+        className="flex transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${current * 100}%)` }}
+      >
+        {gallery.map((src) => (
+          <div key={src} className="relative aspect-[4/3] w-full shrink-0">
+            <Image
+              src={src}
+              alt="Activity photo"
+              fill
+              className="object-cover"
+              sizes="(max-width: 512px) 100vw, 512px"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="absolute bottom-2 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+        {gallery.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`h-2 rounded-full transition-all ${
+              i === current
+                ? 'w-5 bg-primary'
+                : 'w-2 bg-foreground/40 hover:bg-foreground/60'
+            }`}
+            aria-label={`Go to photo ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function PortfolioContent() {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-14 px-6 py-12 sm:px-10 lg:px-16">
@@ -221,23 +278,8 @@ export function PortfolioContent() {
       <FadeIn>
         <section id="gallery" aria-label="Gallery" className="scroll-mt-20">
           <SectionHeading>Gallery</SectionHeading>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {gallery.map((src) => (
-              <div
-                key={src}
-                className="group aspect-square overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_15px_rgba(0,200,200,0.08)]"
-              >
-                <div className="relative h-full w-full">
-                  <Image
-                    src={src}
-                    alt="Activity photo"
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  />
-                </div>
-              </div>
-            ))}
+          <div className="mx-auto max-w-lg">
+            <GalleryCarousel />
           </div>
         </section>
       </FadeIn>
